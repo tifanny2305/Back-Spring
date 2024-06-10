@@ -1,6 +1,8 @@
 package com.examen.controllers;
 import com.examen.controllers.dto.AulaDTO;
 import com.examen.controllers.dto.DocenteDTO;
+import com.examen.controllers.dto.UsuarioDTO;
+import com.examen.entity.Administrador;
 import com.examen.entity.Aula;
 import com.examen.entity.Docente;
 import com.examen.entity.Usuario;
@@ -28,10 +30,15 @@ public class DocenteController {
         if(docenteOptional.isPresent()){
             Docente docente = docenteOptional.get();
             DocenteDTO docenteDTO = DocenteDTO.builder()
-                    .id(docente.getId())
-                    .codigo(docente.getCodigo())
-//                    .usuario(docente.getUsuario())
-//                    .cargaHorarias(docente.getCargaHorarias())
+                    .nombre(docente.getNombre())
+                    .apellidoP(docente.getApellidoP())
+                    .apellidoM(docente.getApellidoM())
+                    .usuario(UsuarioDTO.builder()
+                            .id(docente.getUsuario().getId())
+                            .username(docente.getUsuario().getUsername())
+                            .email(docente.getUsuario().getEmail())
+                            .build()
+                    )
                     .build();
             return ResponseEntity.ok(docenteDTO);
         }
@@ -42,10 +49,15 @@ public class DocenteController {
     public ResponseEntity<?> findAll(){
         List<DocenteDTO> docenteDTOS = docenteService.findAll().
                 stream().map(docente -> DocenteDTO.builder()
-                        .id(docente.getId())
-                        .codigo(docente.getCodigo())
-//                        .usuario(docente.getUsuario())
-//                        .cargaHorarias(docente.getCargaHorarias())
+                        .nombre(docente.getNombre())
+                        .apellidoP(docente.getApellidoP())
+                        .apellidoM(docente.getApellidoM())
+                        .usuario(UsuarioDTO.builder()
+                                .id(docente.getUsuario().getId())
+                                .username(docente.getUsuario().getUsername())
+                                .email(docente.getUsuario().getEmail())
+                                .build()
+                        )
                         .build()
                 ).toList();
         return ResponseEntity.ok(docenteDTOS);
@@ -53,26 +65,16 @@ public class DocenteController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody DocenteDTO docenteDTO) throws URISyntaxException {
-        Optional<Usuario> usuarioOptional = usuarioService.findById(docenteDTO.getUsuario().getId());
-        Usuario usuario = new Usuario();
-        if(usuarioOptional.isPresent()){
-            usuario = usuarioOptional.get();
-            usuario.setId(usuarioOptional.get().getId());
-//            usuario.setNombre(usuarioOptional.get().getNombre());
-//            usuario.setDocente(usuarioOptional.get().getDocente());
-            usuario.setEmail(usuarioOptional.get().getEmail());
-            usuario.setPassword(usuarioOptional.get().getPassword());
-//            usuario.setApMaterno(usuarioOptional.get().getApMaterno());
-//            usuario.setApPaterno(usuarioOptional.get().getApPaterno());
-//            usuario.setAdministrador(usuarioOptional.get().getAdministrador());
-            usuarioService.save(usuario);
-
-        }
         docenteService.save(Docente.builder()
                 .id(docenteDTO.getId())
-                .codigo(docenteDTO.getCodigo())
-//                .usuario(usuario)
-//                .cargaHorarias(docenteDTO.getCargaHorarias())
+                .nombre(docenteDTO.getNombre())
+                .apellidoP(docenteDTO.getApellidoP())
+                .apellidoM(docenteDTO.getApellidoM())
+                .usuario(Usuario.builder()
+                        .id(docenteDTO.getUsuario().getId())
+                        .username(docenteDTO.getUsuario().getUsername())
+                        .build()
+                )
                 .build());
         return ResponseEntity.created(new URI("/api/docente/save")).build();
     }
@@ -82,10 +84,14 @@ public class DocenteController {
         Optional<Docente> docenteOptional = docenteService.findById(id);
         if(docenteOptional.isPresent()){
             Docente docente = docenteOptional.get();
-            docente.setCodigo(docenteDTO.getCodigo());
-//            docente.setUsuario(docenteDTO.getUsuario());
-//            docente.setCargaHorarias(docenteDTO.getCargaHorarias());
+            docente.setNombre(docenteDTO.getNombre());
             docente.setId(id);
+            docente.setApellidoP(docenteDTO.getApellidoP());
+            docente.setApellidoM(docenteDTO.getApellidoM());
+            docente.setUsuario(Usuario.builder()
+                    .id(docenteDTO.getUsuario().getId())
+                    .username(docenteDTO.getUsuario().getUsername())
+                    .build());
             docenteService.save(docente);
             return ResponseEntity.ok("Registro actualizado");
         }

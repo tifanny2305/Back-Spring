@@ -15,7 +15,7 @@ import java.util.Set;
 
 @SpringBootApplication
 public class ExamenApplication {
-
+	private Usuario usuario;
 	public static void main(String[] args) {
 		SpringApplication.run(ExamenApplication.class, args);
 	}
@@ -49,5 +49,6 @@ public class ExamenApplication {
 			usuarioRepository.save(usuario);
 			usuarioRepository.save(usuario2);
 		};
-	}*/
+	}
+*/
 }

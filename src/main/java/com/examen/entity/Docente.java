@@ -17,14 +17,16 @@ public class Docente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 5,unique = true)
-    private String codigo;
-//
-//    @OneToOne(targetEntity = Usuario.class)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private Usuario usuario;
-//    @OneToMany(targetEntity = CargaHoraria.class, mappedBy = "docente")
-//    private List<CargaHoraria> cargaHorarias;
+    private String nombre;
+    @Column(name = "apellido_p")
+    private String apellidoP;
+    @Column(name = "apellido_m")
+    private String apellidoM;
+    @OneToOne(targetEntity = Usuario.class)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Usuario usuario;
+    @OneToMany(targetEntity = CargaHoraria.class, mappedBy = "docente")
+    private List<CargaHoraria> cargaHorarias;
 
 
 }

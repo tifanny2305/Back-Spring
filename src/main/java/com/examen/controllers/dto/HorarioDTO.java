@@ -17,5 +17,4 @@ public class HorarioDTO {
     private MateriaDTO materia;
     private GrupoDTO grupo;
     private AulaDTO aula;
-
 }

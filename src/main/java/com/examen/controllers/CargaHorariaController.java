@@ -1,9 +1,7 @@
 package com.examen.controllers;
 
-import com.examen.controllers.dto.AulaDTO;
-import com.examen.controllers.dto.CargaHorariaDTO;
-import com.examen.entity.Aula;
-import com.examen.entity.CargaHoraria;
+import com.examen.controllers.dto.*;
+import com.examen.entity.*;
 import com.examen.service.ICargaHorariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +25,33 @@ public class CargaHorariaController {
             CargaHoraria cargaHoraria = cargaHorariaOptional.get();
             CargaHorariaDTO cargaHorariaDTO = CargaHorariaDTO.builder()
                     .id(cargaHoraria.getId())
-                    .grupo(cargaHoraria.getGrupo())
                     .fecha(cargaHoraria.getFecha())
-                    .materia(cargaHoraria.getMateria())
-                    .gestion(cargaHoraria.getGestion())
-                    .carrera(cargaHoraria.getCarrera())
-                    .docente(cargaHoraria.getDocente())
-                    .administrador(cargaHoraria.getAdministrador())
+                    .grupo(GrupoDTO.builder()
+                            .id(cargaHoraria.getGrupo().getId())
+                            .sigla(cargaHoraria.getGrupo().getSigla())
+                            .build()
+                    )
+                    .materia(MateriaDTO.builder()
+                            .id(cargaHoraria.getMateria().getId())
+                            .nombre(cargaHoraria.getMateria().getNombre())
+                            .build())
+                    .gestion(GestionDTO.builder()
+                            .id(cargaHoraria.getGestion().getId())
+                            .nombre(cargaHoraria.getGestion().getNombre())
+                            .build())
+                    .carrera(CarreraDTO.builder()
+                            .id(cargaHoraria.getCarrera().getId())
+                            .nombre(cargaHoraria.getCarrera().getNombre())
+                            .build())
+                    .docente(DocenteDTO.builder()
+                            .id(cargaHoraria.getDocente().getId())
+                            .apellidoP(cargaHoraria.getDocente().getApellidoP())
+                            .apellidoM(cargaHoraria.getDocente().getApellidoM())
+                            .nombre(cargaHoraria.getDocente().getNombre())
+                            .build())
+                    .administrador(AdministradorDTO.builder()
+                            .id(cargaHoraria.getAdministrador().getId())
+                            .build())
                     .build();
             return ResponseEntity.ok(cargaHorariaDTO);
         }
@@ -45,13 +63,33 @@ public class CargaHorariaController {
         List<CargaHorariaDTO> cargaHorariaDTOS = cargaHorariaService.findAll().
                 stream().map(cargaHoraria -> CargaHorariaDTO.builder()
                         .id(cargaHoraria.getId())
-                        .grupo(cargaHoraria.getGrupo())
                         .fecha(cargaHoraria.getFecha())
-                        .materia(cargaHoraria.getMateria())
-                        .gestion(cargaHoraria.getGestion())
-                        .carrera(cargaHoraria.getCarrera())
-                        .docente(cargaHoraria.getDocente())
-                        .administrador(cargaHoraria.getAdministrador())
+                        .grupo(GrupoDTO.builder()
+                                .id(cargaHoraria.getGrupo().getId())
+                                .sigla(cargaHoraria.getGrupo().getSigla())
+                                .build()
+                        )
+                        .materia(MateriaDTO.builder()
+                                .id(cargaHoraria.getMateria().getId())
+                                .nombre(cargaHoraria.getMateria().getNombre())
+                                .build())
+                        .gestion(GestionDTO.builder()
+                                .id(cargaHoraria.getGestion().getId())
+                                .nombre(cargaHoraria.getGestion().getNombre())
+                                .build())
+                        .carrera(CarreraDTO.builder()
+                                .id(cargaHoraria.getCarrera().getId())
+                                .nombre(cargaHoraria.getCarrera().getNombre())
+                                .build())
+                        .docente(DocenteDTO.builder()
+                                .id(cargaHoraria.getDocente().getId())
+                                .apellidoP(cargaHoraria.getDocente().getApellidoP())
+                                .apellidoM(cargaHoraria.getDocente().getApellidoM())
+                                .nombre(cargaHoraria.getDocente().getNombre())
+                                .build())
+                        .administrador(AdministradorDTO.builder()
+                                .id(cargaHoraria.getAdministrador().getId())
+                                .build())
                         .build()
                 ).toList();
         return ResponseEntity.ok(cargaHorariaDTOS);
@@ -61,13 +99,33 @@ public class CargaHorariaController {
     public ResponseEntity<?> save(@RequestBody CargaHorariaDTO cargaHorariaDTO) throws URISyntaxException {
         cargaHorariaService.save(CargaHoraria.builder()
                 .id(cargaHorariaDTO.getId())
-                .grupo(cargaHorariaDTO.getGrupo())
                 .fecha(cargaHorariaDTO.getFecha())
-                .materia(cargaHorariaDTO.getMateria())
-                .gestion(cargaHorariaDTO.getGestion())
-                .carrera(cargaHorariaDTO.getCarrera())
-                .docente(cargaHorariaDTO.getDocente())
-                .administrador(cargaHorariaDTO.getAdministrador())
+                .grupo(Grupo.builder()
+                        .id(cargaHorariaDTO.getGrupo().getId())
+                        .sigla(cargaHorariaDTO.getGrupo().getSigla())
+                        .build()
+                )
+                .materia(Materia.builder()
+                        .id(cargaHorariaDTO.getMateria().getId())
+                        .nombre(cargaHorariaDTO.getMateria().getNombre())
+                        .build())
+                .gestion(Gestion.builder()
+                        .id(cargaHorariaDTO.getGestion().getId())
+                        .nombre(cargaHorariaDTO.getGestion().getNombre())
+                        .build())
+                .carrera(Carrera.builder()
+                        .id(cargaHorariaDTO.getCarrera().getId())
+                        .nombre(cargaHorariaDTO.getCarrera().getNombre())
+                        .build())
+                .docente(Docente.builder()
+                        .id(cargaHorariaDTO.getDocente().getId())
+                        .apellidoP(cargaHorariaDTO.getDocente().getApellidoP())
+                        .apellidoM(cargaHorariaDTO.getDocente().getApellidoM())
+                        .nombre(cargaHorariaDTO.getDocente().getNombre())
+                        .build())
+                .administrador(Administrador.builder()
+                        .id(cargaHorariaDTO.getAdministrador().getId())
+                        .build())
                 .build());
         return ResponseEntity.created(new URI("/api/cargahoraria/save")).build();
     }
@@ -78,13 +136,32 @@ public class CargaHorariaController {
         if(cargaHorariaOptional.isPresent()){
             CargaHoraria cargaHoraria = cargaHorariaOptional.get();
             cargaHoraria.setId(id);
-            cargaHoraria.setGrupo(cargaHorariaDTO.getGrupo());
-            cargaHoraria.setAdministrador(cargaHorariaDTO.getAdministrador());
+            cargaHoraria.setGrupo(Grupo.builder()
+                    .id(cargaHorariaDTO.getGrupo().getId())
+                    .sigla(cargaHorariaDTO.getGrupo().getSigla())
+                    .build());
+            cargaHoraria.setAdministrador(Administrador.builder()
+                    .id(cargaHorariaDTO.getAdministrador().getId())
+                    .build());
             cargaHoraria.setFecha(cargaHorariaDTO.getFecha());
-            cargaHoraria.setMateria(cargaHorariaDTO.getMateria());
-            cargaHoraria.setGestion(cargaHorariaDTO.getGestion());
-            cargaHoraria.setCarrera(cargaHorariaDTO.getCarrera());
-            cargaHoraria.setDocente(cargaHorariaDTO.getDocente());
+            cargaHoraria.setMateria(Materia.builder()
+                    .id(cargaHorariaDTO.getMateria().getId())
+                    .nombre(cargaHorariaDTO.getMateria().getNombre())
+                    .build());
+            cargaHoraria.setGestion(Gestion.builder()
+                    .id(cargaHorariaDTO.getGestion().getId())
+                    .nombre(cargaHorariaDTO.getGestion().getNombre())
+                    .build());
+            cargaHoraria.setCarrera(Carrera.builder()
+                    .id(cargaHorariaDTO.getCarrera().getId())
+                    .nombre(cargaHorariaDTO.getCarrera().getNombre())
+                    .build());
+            cargaHoraria.setDocente(Docente.builder()
+                    .id(cargaHorariaDTO.getDocente().getId())
+                    .apellidoP(cargaHorariaDTO.getDocente().getApellidoP())
+                    .apellidoM(cargaHorariaDTO.getDocente().getApellidoM())
+                    .nombre(cargaHorariaDTO.getDocente().getNombre())
+                    .build());
             cargaHorariaService.save(cargaHoraria);
             return ResponseEntity.ok("Registro actualizado");
         }

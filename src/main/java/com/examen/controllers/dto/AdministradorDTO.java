@@ -13,5 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AdministradorDTO {
     private Long id;
-    private Usuario usuario;
+    private String nombre;
+    private String apellidoP;
+    private String apellidoM;
+    private UsuarioDTO usuario;
 }

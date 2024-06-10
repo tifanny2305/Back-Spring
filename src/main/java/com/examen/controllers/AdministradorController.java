@@ -1,7 +1,9 @@
 package com.examen.controllers;
 
 import com.examen.controllers.dto.AdministradorDTO;
+import com.examen.controllers.dto.UsuarioDTO;
 import com.examen.entity.Administrador;
+import com.examen.entity.Usuario;
 import com.examen.service.IAdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,15 @@ public class AdministradorController {
             Administrador administrador = administradorOptional.get();
             AdministradorDTO administradorDTO = AdministradorDTO.builder()
                     .id(administrador.getId())
-//                    .usuario(administrador.getUsuario())
-//                    .cargaHorarias(administrador.getCargaHorarias())
+                    .nombre(administrador.getNombre())
+                    .apellidoP(administrador.getApellidoP())
+                    .apellidoM(administrador.getApellidoM())
+                    .usuario(UsuarioDTO.builder()
+                            .id(administrador.getUsuario().getId())
+                            .username(administrador.getUsuario().getUsername())
+                            .email(administrador.getUsuario().getEmail())
+                            .build()
+                    )
                     .build();
             return ResponseEntity.ok(administradorDTO);
         }
@@ -37,8 +46,15 @@ public class AdministradorController {
         List<AdministradorDTO> administradorDTOS = administradorService.findAll()
                 .stream().map(administrador -> AdministradorDTO.builder()
                         .id(administrador.getId())
-//                        .usuario(administrador.getUsuario())
-//                        .cargaHorarias(administrador.getCargaHorarias())
+                        .nombre(administrador.getNombre())
+                                .apellidoP(administrador.getApellidoP())
+                                .apellidoM(administrador.getApellidoM())
+                                .usuario(UsuarioDTO.builder()
+                                        .id(administrador.getUsuario().getId())
+                                        .username(administrador.getUsuario().getUsername())
+                                        .email(administrador.getUsuario().getEmail())
+                                        .build()
+                                )
                         .build()
                 ).toList();
         return ResponseEntity.ok(administradorDTOS);
@@ -48,8 +64,14 @@ public class AdministradorController {
     public ResponseEntity<?> save(@RequestBody AdministradorDTO administradorDTO) throws URISyntaxException {
         administradorService.save(Administrador.builder()
                 .id(administradorDTO.getId())
-//                .usuario(administradorDTO.getUsuario())
-//                .cargaHorarias(administradorDTO.getCargaHorarias())
+                .nombre(administradorDTO.getNombre())
+                .apellidoP(administradorDTO.getApellidoP())
+                .apellidoM(administradorDTO.getApellidoM())
+                .usuario(Usuario.builder()
+                        .id(administradorDTO.getUsuario().getId())
+                        .username(administradorDTO.getUsuario().getUsername())
+                        .build()
+                )
                 .build());
         return ResponseEntity.created(new URI("/api/admin/save")).build();
     }
@@ -59,7 +81,14 @@ public class AdministradorController {
         Optional<Administrador> administradorOptional = administradorService.findById(id);
         if (administradorOptional.isPresent()){
             Administrador administrador = administradorOptional.get();
-//            administrador.setUsuario(administradorDTO.getUsuario());
+            administrador.setNombre(administradorDTO.getNombre());
+            administrador.setId(id);
+            administrador.setApellidoP(administrador.getApellidoP());
+            administrador.setApellidoM(administradorDTO.getApellidoM());
+            administrador.setUsuario(Usuario.builder()
+                    .id(administradorDTO.getUsuario().getId())
+                    .username(administradorDTO.getUsuario().getUsername())
+                    .build());
             administradorService.save(administrador);
             return ResponseEntity.ok("Registro actualizado");
         }
@@ -74,5 +103,4 @@ public class AdministradorController {
         }
         return ResponseEntity.badRequest().build();
     }
-
 }

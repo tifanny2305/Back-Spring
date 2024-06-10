@@ -41,10 +41,14 @@ public class UsuarioController {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
         if(usuarioOptional.isPresent()){
             Usuario usuario = usuarioOptional.get();
+            Set<String> roles = usuario.getRoles().stream()
+                    .map(roleEntity -> roleEntity.getName().name())
+                    .collect(Collectors.toSet());
             UsuarioDTO usuarioDTO = UsuarioDTO.builder()
                     .id(usuario.getId())
                     .email(usuario.getEmail())
-                    .password(usuario.getPassword())
+                    .username(usuario.getUsername())
+                    .roles(roles)
                     .build();
             return ResponseEntity.ok(usuarioDTO);
         }
@@ -53,16 +57,20 @@ public class UsuarioController {
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll(){
+
         List<UsuarioDTO> usuarioDTOS = usuarioService.findAll().
                 stream().map(usuario -> UsuarioDTO.builder()
                         .id(usuario.getId())
                         .email(usuario.getEmail())
-                        .password(usuario.getPassword())
+                        .username(usuario.getUsername())
+                        .roles(usuario.getRoles().stream()
+                                .map(roleEntity -> roleEntity.getName().name())
+                                .collect(Collectors.toSet()))
                         .build()
                 ).toList();
         return ResponseEntity.ok(usuarioDTOS);
     }
-
+/*
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody UsuarioDTO usuarioDTO) throws URISyntaxException {
         usuarioService.save(Usuario.builder()
@@ -86,7 +94,7 @@ public class UsuarioController {
         }
         return ResponseEntity.notFound().build();
     }
-
+*/
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         if (id != null && usuarioService.findById(id).isPresent()){

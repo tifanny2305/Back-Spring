@@ -11,6 +11,8 @@ import lombok.*;
 @Builder
 public class DocenteDTO {
     private Long id;
-    private String codigo;
-    private Usuario usuario;
+    private String nombre;
+    private String apellidoP;
+    private String apellidoM;
+    private UsuarioDTO usuario;
 }

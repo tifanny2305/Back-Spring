@@ -28,9 +28,9 @@ public class Usuario {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 
-//    @OneToOne(targetEntity = Docente.class, mappedBy = "usuario")
-//    private Docente docente;
-//    @OneToOne(targetEntity = Administrador.class, mappedBy = "usuario")
-//    private Administrador administrador;
+    @OneToOne(targetEntity = Docente.class, mappedBy = "usuario")
+    private Docente docente;
+    @OneToOne(targetEntity = Administrador.class, mappedBy = "usuario")
+    private Administrador administrador;
 
 }

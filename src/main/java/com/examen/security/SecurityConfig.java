@@ -1,5 +1,6 @@
 package com.examen.security;
 import com.examen.security.filter.JwtAuthenticationFilter;
+import com.examen.security.filter.JwtAuthorizationFilter;
 import com.examen.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -23,7 +25,8 @@ public class SecurityConfig {
     @Autowired
     UserDetailsService userDetailsService;
 
-
+    @Autowired
+    JwtAuthorizationFilter jwtAuthorizationFilter;
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
 
@@ -33,13 +36,15 @@ public class SecurityConfig {
 
         return httpSecurity
                 .csrf(config->config.disable())
-//                .authorizeHttpRequests(auth -> {
-//                    auth.anyRequest().authenticated();
-//                })
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/login").permitAll();
+                    auth.anyRequest().authenticated();
+                })
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .addFilter(jwtAuthenticationFilter)
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

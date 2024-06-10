@@ -13,10 +13,10 @@ import java.util.Date;
 public class CargaHorariaDTO {
     private Long id;
     private Date fecha;
-    private Docente docente;
-    private Gestion gestion;
-    private Administrador administrador;
-    private Grupo grupo;
-    private Materia materia;
-    private Carrera carrera;
+    private DocenteDTO docente;
+    private GestionDTO gestion;
+    private AdministradorDTO administrador;
+    private GrupoDTO grupo;
+    private MateriaDTO materia;
+    private CarreraDTO carrera;
 }
