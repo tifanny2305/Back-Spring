@@ -1,10 +1,12 @@
 package com.examen.controllers;
 
 import com.examen.controllers.dto.AsistenciaDTO;
+import com.examen.controllers.dto.AsistenciaHorarioDTO;
 import com.examen.controllers.dto.HorarioDTO;
 import com.examen.entity.Asistencia;
 import com.examen.entity.Horario;
 import com.examen.service.IAsistenciaService;
+import com.examen.service.IHorarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,9 @@ import java.util.Optional;
 public class AsistenciaController {
     @Autowired
     private IAsistenciaService asistenciaService;
+
+    @Autowired
+    private IHorarioService horarioService;
 
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
@@ -62,6 +67,33 @@ public class AsistenciaController {
                         .build()
                 ).toList();
         return ResponseEntity.ok(asistenciaDTOS);
+    }
+
+    @GetMapping("/findHorario/{idHorario}")
+    public ResponseEntity<?> findHorario(@PathVariable Long idHorario){
+
+        Optional<Horario> horarioOptional = horarioService.findById(idHorario);
+
+        if (horarioOptional.isPresent()){
+            Horario horario = horarioOptional.get();
+
+            List<AsistenciaHorarioDTO> asistenciaDTOS = asistenciaService.findByHorario(horario).
+                    stream().map(asistencia -> AsistenciaHorarioDTO.builder()
+                            .id(asistencia.getId())
+                            .fecha(asistencia.getFecha())
+                            .hora(asistencia.getHora())
+                            .estado(asistencia.getEstado())
+                            .observacion(asistencia.getObservacion())
+                            .dia(asistencia.getHorario().getDia())
+                            .horaInicio(asistencia.getHorario().getHoraInicio())
+                            .aula(asistencia.getHorario().getAula().getNumero())
+                            .modulo(asistencia.getHorario().getAula().getModulo().getNombre())
+                            .horaFin(asistencia.getHorario().getHoraFin())
+                            .build()
+                    ).toList();
+            return ResponseEntity.ok(asistenciaDTOS);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/save")

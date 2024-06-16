@@ -1,6 +1,7 @@
 package com.examen.persistence.implement;
 
 import com.examen.entity.Asistencia;
+import com.examen.entity.Horario;
 import com.examen.persistence.IAsistenciaDAO;
 import com.examen.repository.AsistenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class AsistenciaDAOImplement implements IAsistenciaDAO {
     @Override
     public List<Asistencia> findAll() {
         return (List<Asistencia>)asistenciaRepository.findAll();
+    }
+
+    @Override
+    public List<Asistencia> findByHorario(Horario horario) {
+        return (List<Asistencia>)asistenciaRepository.findByHorario(horario);
     }
 
     @Override

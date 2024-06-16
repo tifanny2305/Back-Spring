@@ -2,6 +2,7 @@ package com.examen.persistence.implement;
 
 import com.examen.entity.Aula;
 import com.examen.entity.Docente;
+import com.examen.entity.Usuario;
 import com.examen.persistence.IAulaDAO;
 import com.examen.persistence.IDocenteDAO;
 import com.examen.repository.AulaRepository;
@@ -27,6 +28,11 @@ public class DocenteDAOImplement implements IDocenteDAO {
     @Override
     public Optional<Docente> findById(Long id) {
         return docenteRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Docente> findByUsuario(Usuario usuario) {
+        return docenteRepository.findByUsuario(usuario);
     }
 
     @Override

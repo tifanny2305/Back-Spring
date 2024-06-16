@@ -1,6 +1,7 @@
 package com.examen.service.implement;
 
 import com.examen.entity.Asistencia;
+import com.examen.entity.Horario;
 import com.examen.persistence.IAsistenciaDAO;
 import com.examen.repository.AsistenciaRepository;
 import com.examen.service.IAsistenciaService;
@@ -21,6 +22,11 @@ public class AsistenciaServiceImplement implements IAsistenciaService {
     @Override
     public List<Asistencia> findAll() {
         return (List<Asistencia>)asistenciaDAO.findAll();
+    }
+
+    @Override
+    public List<Asistencia> findByHorario(Horario horario) {
+        return (List<Asistencia>)asistenciaDAO.findByHorario(horario);
     }
 
     @Override

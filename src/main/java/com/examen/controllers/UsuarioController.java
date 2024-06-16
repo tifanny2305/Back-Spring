@@ -80,7 +80,7 @@ public class UsuarioController {
                 .build());
         return ResponseEntity.created(new URI("/api/usuario/save")).build();
     }
-
+*/
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) throws URISyntaxException {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
@@ -89,12 +89,13 @@ public class UsuarioController {
             usuario.setId(usuarioDTO.getId());
             usuario.setEmail(usuario.getEmail());
             usuario.setPassword(usuario.getPassword());
+            usuario.setRoles(usuario.getRoles());
             usuarioService.save(usuario);
             return ResponseEntity.ok("Registro actualizado");
         }
         return ResponseEntity.notFound().build();
     }
-*/
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         if (id != null && usuarioService.findById(id).isPresent()){

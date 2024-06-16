@@ -1,6 +1,7 @@
 package com.examen.service.implement;
 
 import com.examen.entity.CargaHoraria;
+import com.examen.entity.Docente;
 import com.examen.persistence.ICargaHorariaDAO;
 import com.examen.repository.CargaHorariaRepository;
 import com.examen.service.ICargaHorariaService;
@@ -21,6 +22,11 @@ public class CargaHorariaServiceImplement implements ICargaHorariaService {
     @Override
     public List<CargaHoraria> findAll() {
         return cargaHorariaDAO.findAll();
+    }
+
+    @Override
+    public List<CargaHoraria> findByDocente(Docente docente) {
+        return  cargaHorariaDAO.findByDocente(docente);
     }
 
     @Override

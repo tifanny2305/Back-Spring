@@ -87,6 +87,20 @@ public class HorarioController {
         return ResponseEntity.ok(horarioDTOS);
     }
 
+    @GetMapping("/materiaGrupo/{materia}/{grupo}")
+    public ResponseEntity<?> findMateriaGrupo(@PathVariable Materia materia, @PathVariable Grupo grupo){
+        List<HorarioMateriaGrupoDTO> horarioDTOS = horarioService.findByMateriaAndGrupo(materia, grupo).
+                stream().map(horario -> HorarioMateriaGrupoDTO.builder()
+                        .id(horario.getId())
+                        .dia(horario.getDia())
+                        .horaInicio(horario.getHoraInicio())
+                        .horaFin(horario.getHoraFin())
+                        .aula(horario.getAula().getNumero())
+                        .build()
+                ).toList();
+        return ResponseEntity.ok(horarioDTOS);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody HorarioDTO horarioDTO) throws URISyntaxException {
         horarioService.save(Horario.builder()

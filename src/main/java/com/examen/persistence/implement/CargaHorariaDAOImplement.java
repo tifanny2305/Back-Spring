@@ -2,6 +2,7 @@ package com.examen.persistence.implement;
 
 import com.examen.entity.Aula;
 import com.examen.entity.CargaHoraria;
+import com.examen.entity.Docente;
 import com.examen.persistence.IAulaDAO;
 import com.examen.persistence.ICargaHorariaDAO;
 import com.examen.repository.AulaRepository;
@@ -22,6 +23,11 @@ public class CargaHorariaDAOImplement implements ICargaHorariaDAO {
     @Override
     public List<CargaHoraria> findAll() {
         return cargaHorariaRepository.findAll();
+    }
+
+    @Override
+    public List<CargaHoraria> findByDocente(Docente docente) {
+        return cargaHorariaRepository.findByDocente(docente);
     }
 
     @Override

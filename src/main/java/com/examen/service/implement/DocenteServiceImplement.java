@@ -1,6 +1,7 @@
 package com.examen.service.implement;
 
 import com.examen.entity.Docente;
+import com.examen.entity.Usuario;
 import com.examen.persistence.IDocenteDAO;
 import com.examen.repository.DocenteRepository;
 import com.examen.service.IDocenteService;
@@ -26,6 +27,11 @@ public class DocenteServiceImplement implements IDocenteService {
     @Override
     public Optional<Docente> findById(Long id) {
         return docenteDAO.findById(id);
+    }
+
+    @Override
+    public Optional<Docente> findByUsuario(Usuario usuario) {
+        return docenteDAO.findByUsuario(usuario);
     }
 
     @Override

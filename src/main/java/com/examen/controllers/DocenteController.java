@@ -6,6 +6,7 @@ import com.examen.entity.Administrador;
 import com.examen.entity.Aula;
 import com.examen.entity.Docente;
 import com.examen.entity.Usuario;
+import com.examen.repository.UsuarioRepository;
 import com.examen.service.IAulaService;
 import com.examen.service.IDocenteService;
 import com.examen.service.IUsuarioService;
@@ -23,13 +24,20 @@ import java.util.Optional;
 public class DocenteController {
     @Autowired
     private IDocenteService docenteService;
+
+    @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         Optional<Docente> docenteOptional = docenteService.findById(id);
         if(docenteOptional.isPresent()){
             Docente docente = docenteOptional.get();
             DocenteDTO docenteDTO = DocenteDTO.builder()
+                    .id(docente.getId())
                     .nombre(docente.getNombre())
                     .apellidoP(docente.getApellidoP())
                     .apellidoM(docente.getApellidoM())
@@ -45,10 +53,41 @@ public class DocenteController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/findUsername/{username}")
+    public ResponseEntity<?> findById(@PathVariable String username){
+
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByUsername(username);
+
+        if(usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+
+            Optional<Docente> docenteOptional = docenteService.findByUsuario(usuario);
+
+            if(docenteOptional.isPresent()){
+                Docente docente = docenteOptional.get();
+                DocenteDTO docenteDTO = DocenteDTO.builder()
+                        .id(docente.getId())
+                        .nombre(docente.getNombre())
+                        .apellidoP(docente.getApellidoP())
+                        .apellidoM(docente.getApellidoM())
+                        .usuario(UsuarioDTO.builder()
+                                .id(docente.getUsuario().getId())
+                                .username(docente.getUsuario().getUsername())
+                                .email(docente.getUsuario().getEmail())
+                                .build()
+                        )
+                        .build();
+                return ResponseEntity.ok(docenteDTO);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll(){
         List<DocenteDTO> docenteDTOS = docenteService.findAll().
                 stream().map(docente -> DocenteDTO.builder()
+                        .id(docente.getId())
                         .nombre(docente.getNombre())
                         .apellidoP(docente.getApellidoP())
                         .apellidoM(docente.getApellidoM())
@@ -106,4 +145,6 @@ public class DocenteController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+
 }

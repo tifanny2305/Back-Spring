@@ -3,6 +3,7 @@ package com.examen.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.TimeZone;
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class Asistencia {
     private Long id;
     private char estado;
     private Date fecha;
-    private TimeZone hora;
+    private LocalTime hora;
     private String observacion;
 
     @ManyToOne(targetEntity = Horario.class)
