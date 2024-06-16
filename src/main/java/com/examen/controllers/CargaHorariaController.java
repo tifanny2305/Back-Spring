@@ -97,6 +97,7 @@ public class CargaHorariaController {
                                 .build())
                         .administrador(AdministradorDTO.builder()
                                 .id(cargaHoraria.getAdministrador().getId())
+                                .nombre(cargaHoraria.getAdministrador().getNombre())
                                 .build())
                         .horarios(horarioService.findByMateriaAndGrupo(cargaHoraria.getMateria(), cargaHoraria.getGrupo())
                                 .stream().map(horario-> HorarioMateriaGrupoDTO.builder()
